@@ -1,0 +1,1 @@
+export const URL: string = process.env.URL || 'https://automationexercise.com/';

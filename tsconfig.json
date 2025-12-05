@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "types": ["@playwright/test", "node"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+
+  },
+  "include": ["tests/**/*.ts", "**/*.ts"]
+}
