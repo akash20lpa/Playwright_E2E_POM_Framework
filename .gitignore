@@ -1,0 +1,7 @@
+# Playwright generated artifacts
+playwright-report/
+test-results/
+
+# Optional but recommended
+node_modules/
+.env
