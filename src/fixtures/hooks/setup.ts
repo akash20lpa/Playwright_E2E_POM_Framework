@@ -1,9 +1,10 @@
 import { test as base, expect, Page } from '@playwright/test';
-import { SignupPage, URL } from '../utils/importManager';
+import { SignupPage, LoginPage, URL } from '../utils/importManager';
 
 type TestFixtures = {
     
   signupPage: SignupPage;
+  loginpage: LoginPage;
 };
  
 export const test = base.extend<TestFixtures & { page: Page }>({
@@ -14,9 +15,15 @@ export const test = base.extend<TestFixtures & { page: Page }>({
     await use(page);
   },
   signupPage: async ({ page }, use) => {
-    const dashboardPage = new SignupPage(page);
-    await use(dashboardPage);
+    const signuppage = new SignupPage(page);
+    await use(signuppage);
   },
+
+  loginpage: async ({page}, use) =>{
+    const loginpage = new LoginPage(page);
+    await use(loginpage);
+  }
+
 });
 
 export default test;

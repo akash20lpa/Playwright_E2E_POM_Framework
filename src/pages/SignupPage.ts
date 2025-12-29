@@ -1,10 +1,8 @@
 import { Page, expect } from '@playwright/test';
 import { step } from '../fixtures/hooks/setup';
 import { testdata, signupPageLocators, URL } from '../fixtures/utils/importManager';
-import test from 'node:test';
-
-let randomEmail: string;
-
+import * as fs from 'fs';
+import * as path from 'path';
 
 export class SignupPage {
   private page: Page;
@@ -12,6 +10,8 @@ export class SignupPage {
   constructor(page: Page) {
     this.page = page;
   }
+
+  private randomEmail!: string;
 
   async verifyTitleForUrl() {
     console.log('Verifying the title for the URL');
@@ -43,11 +43,30 @@ export class SignupPage {
     expect(newUserSignupText).toBe(testdata.globalTestData.newUserSignupText);
   }
 
-  async generateRandomEmail() {
-    randomEmail = `user${Date.now()}@example.com`;
-    console.log('Generated random email:', randomEmail);
-    return randomEmail;
-  }
+  async generateRandomEmail(): Promise<string> {
+  this.randomEmail = `user${Date.now()}@example.com`;
+
+  const filePath = path.join(process.cwd(), 'email.json');
+
+  const emailData = {
+    email: this.randomEmail,
+    generatedAt: new Date().toISOString()
+  };
+
+  fs.writeFileSync(filePath, JSON.stringify(emailData, null, 2));
+
+  console.log('Generated random email:', this.randomEmail);
+  console.log('Email saved to email.json');
+
+  return this.randomEmail;
+}
+
+
+  // async generateRandomEmail() {
+  //   randomEmail = `user${Date.now()}@example.com`;
+  //   console.log('Generated random email:', randomEmail);
+  //   return randomEmail;
+  // }
 
   async fillNewUserSignUpForm() {
     
@@ -106,8 +125,15 @@ export class SignupPage {
 
 async checkUserISLoggedIn(){
 
-  
+  await expect(this.page.getByText(' Logged in as ')).toBeVisible();
 
+}
+
+async clickonLogOut(){
+
+  this.page.locator("a[href='/logout']").click();
+   
+await expect(this.page.getByText('Signup / Login')).toBeVisible();
 }
 
 async verifyLogin() {
@@ -115,7 +141,8 @@ async verifyLogin() {
     await expect(this.page.locator(signupPageLocators.loginEmailInput)).toBeVisible();
     await expect(this.page.locator(signupPageLocators.loginPasswordInput)).toBeVisible();
     console.log('Login fields are visible');
-    await this.page.fill(signupPageLocators.loginEmailInput, await randomEmail);
+    const email = await this.generateRandomEmail();
+    await this.page.fill(signupPageLocators.signupInputEmail, email);
     await this.page.fill(signupPageLocators.loginPasswordInput, testdata.signupFormData.password);
     await this.page.click(signupPageLocators.loginButton);
     console.log('Clicked on Login button');
