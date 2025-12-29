@@ -1,5 +1,6 @@
 //Pages
 export { SignupPage } from '../../pages/SignupPage';
+export { LoginPage } from '../../pages/LoginPage'
 
 //Utils
 export { URL } from './env';

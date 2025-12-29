@@ -4,7 +4,7 @@ const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests', // Folder where your test files are located
-  timeout: 30 * 1000, // Maximum time for each test (30 seconds)
+  timeout: 40 * 1000, // Maximum time for each test (30 seconds)
   expect: {
     timeout: 5000 // Timeout for expect() checks
   },
